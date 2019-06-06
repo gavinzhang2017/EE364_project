@@ -22,7 +22,7 @@ u = A\b;
 u_new = FEM.B*u + FEM.ud;
 
 %% the randomized coordinate descent method
-max_iter = 3 * 10^6;
+max_iter = 5*10^5;
 prob = zeros(1,n);
 residual_cd = [];
 
@@ -40,33 +40,11 @@ for i = 1 : max_iter
     rel_err = norm(A*x-b) / norm(b);
     residual_cd = [residual_cd rel_err];
 end
-
-
-
 figure
 plot(residual_cd);
 
-%% the gaussian sampling
-max_iter = 3 * 10^5;
-prob = zeros(1,n);
-residual_cd = [];
-
-% randomly initialize x
-x_init = randn(n,1);
-x = x_init;
-
-for i = 1 : max_iter
-    eta = randn(n,1);
-    x = x - (dot(eta, A*x-b))/(eta'*A*eta) * eta;
-    rel_err = norm(A*x-b) / norm(b);
-    residual_cd = [residual_cd rel_err];
-end
-
-figure
-plot(residual_cd);
 %% plot the solution
 figure
 pdeplot(model,'XYData',u_new,'ZData',u_new)
-u_cd = FEM.B*x + FEM.ud;
+u_cd = FEM.B*x + FEM.ud
 figure
-pdeplot(model,'XYData',u_cd,'ZData',u_cd)
